@@ -4,29 +4,37 @@ class ORM {
   }
 
   async getAll() {
-    const response = await fetch(this.dataPath);
-    if (!response.ok) {
-      throw new Error(`Error fetching data: ${response.status}`);
+    try {
+      const response = await fetch(this.dataPath);
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error en ORM.getAll:', error);
+      throw error;
     }
-    return await response.json();
   }
 
   async getById(id) {
     const data = await this.getAll();
-    return data.find(item => item.id === id);
+    return data.find(item => item.id === id) || null;
   }
 
   async filter(criteria) {
     const data = await this.getAll();
     return data.filter(item => {
       return Object.keys(criteria).every(key => {
+        if (Array.isArray(criteria[key])) {
+          return criteria[key].some(val => item[key]?.includes(val));
+        }
         return item[key] === criteria[key];
       });
     });
   }
 }
 
-// Para usar en otros archivos
+// Exportar para pruebas
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = ORM;
 }
