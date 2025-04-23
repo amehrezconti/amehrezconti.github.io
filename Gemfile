@@ -1,8 +1,7 @@
 source "https://rubygems.org"
-
-gem "jekyll", "~> 3.10"  # GitHub Pages usa esta versión
-gem "minima", "~> 2.5"   # Versión compatible
-
+gem "jekyll", "~> 4.3"
+gem "minima", "~> 2.5"
+gem "jekyll-feed", "~> 0.12"
 group :jekyll_plugins do
-  gem "jekyll-feed", "~> 0.12"
+  gem "jekyll-feed"
 end
