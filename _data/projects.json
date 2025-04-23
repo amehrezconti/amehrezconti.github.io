@@ -1,16 +1,97 @@
-[
-  {
-    "id": 1,
-    "title": "Sitio Web Corporativo",
-    "description": "Un sitio web moderno para una empresa local.",
-    "url": "https://ejemplo.com",
-    "tags": ["web", "design", "jekyll"]
-  },
-  {
-    "id": 2,
-    "title": "Aplicación de Tareas",
-    "description": "Aplicación para gestión de tareas con React.",
-    "url": "https://tareas.ejemplo.com",
-    "tags": ["react", "javascript", "web"]
+<section class="projects">
+  <h2>Mis Proyectos</h2>
+  
+  <!-- Mostrará el estado de las pruebas -->
+  <div id="test-results" style="margin: 20px 0; padding: 15px; border: 1px solid #ddd;"></div>
+  
+  <div id="projects-container">
+    <!-- Proyectos se cargarán aquí -->
+  </div>
+</section>
+
+<script src="{{ '/assets/js/orm.js' | relative_url }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async function() {
+  const orm = new ORM('{{ "/_data/projects.json" | relative_url }}');
+  const testResults = document.getElementById('test-results');
+  
+  try {
+    // Ejecutar pruebas automáticamente
+    await runTests(orm, testResults);
+    
+    // Cargar y mostrar proyectos normalmente
+    const projects = await orm.getAll();
+    const container = document.getElementById('projects-container');
+    
+    projects.forEach(project => {
+      const projectEl = document.createElement('div');
+      projectEl.className = 'project';
+      projectEl.innerHTML = `
+        <h3>${project.title}</h3>
+        <p>${project.description}</p>
+        ${project.url ? `<a href="${project.url}" target="_blank">Ver proyecto</a>` : ''}
+      `;
+      container.appendChild(projectEl);
+    });
+    
+  } catch (error) {
+    testResults.innerHTML = `❌ Error en pruebas: ${error.message}`;
+    testResults.style.backgroundColor = '#ffebee';
+    console.error('Error:', error);
   }
-]
+});
+
+async function runTests(orm, outputElement) {
+  const tests = [
+    { name: 'Conexión básica', test: testConnection },
+    { name: 'Obtener todos los proyectos', test: testGetAll },
+    { name: 'Obtener proyecto por ID', test: testGetById },
+    { name: 'Filtrar proyectos', test: testFilter }
+  ];
+  
+  let allPassed = true;
+  let resultsHTML = '<h3>Resultados de Pruebas ORM</h3><ul>';
+  
+  for (const test of tests) {
+    try {
+      await test.test(orm);
+      resultsHTML += `<li>✅ ${test.name} - Pasó</li>`;
+    } catch (error) {
+      allPassed = false;
+      resultsHTML += `<li>❌ ${test.name} - Falló: ${error.message}</li>`;
+    }
+  }
+  
+  resultsHTML += '</ul>';
+  outputElement.innerHTML = resultsHTML;
+  outputElement.style.backgroundColor = allPassed ? '#e8f5e9' : '#ffebee';
+}
+
+// Funciones de prueba
+async function testConnection(orm) {
+  const response = await fetch(orm.dataPath);
+  if (!response.ok) throw new Error('No se pudo cargar el JSON');
+}
+
+async function testGetAll(orm) {
+  const projects = await orm.getAll();
+  if (!Array.isArray(projects)) throw new Error('No devolvió un array');
+  if (projects.length === 0) console.warn('Array de proyectos vacío');
+}
+
+async function testGetById(orm) {
+  const projects = await orm.getAll();
+  if (projects.length > 0) {
+    const project = await orm.getById(projects[0].id);
+    if (!project) throw new Error('No encontró proyecto por ID existente');
+  }
+}
+
+async function testFilter(orm) {
+  const projects = await orm.getAll();
+  if (projects.length > 0) {
+    const filtered = await orm.filter({ id: projects[0].id });
+    if (filtered.length !== 1) throw new Error('Filtro no funcionó correctamente');
+  }
+}
+</script>
