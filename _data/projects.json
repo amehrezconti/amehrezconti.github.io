@@ -3,14 +3,14 @@
     "id": 1,
     "title": "Sitio Web Corporativo",
     "description": "Un sitio web moderno para una empresa local.",
-    "url": "https://ejemplo.com/proyecto1",
+    "url": "https://github.com/226218/",
     "tags": ["web", "design"]
   },
   {
     "id": 2,
     "title": "Aplicación Móvil",
     "description": "Aplicación iOS/Android para gestión de tareas.",
-    "url": "https://ejemplo.com/proyecto2",
+    "url": "https://github.com/226218/",
     "tags": ["mobile", "react-native"]
   }
 ]
