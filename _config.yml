@@ -1,21 +1,16 @@
-title: Mi Portafolio
-description: Portafolio profesional con Jekyll, TDD y ORM
-baseurl: "" 
-url: "" 
+title: Mi Portafolio con ORM
+description: Portafolio con pruebas integradas de ORM
+baseurl: ""
+url: "https://amehrezconti.github.io"  # Reemplaza con tu usuario
 theme: minima
+
+# Permite que GitHub Pages sirva archivos JSON
+include:
+  - _data/projects.json
+  - _data/skills.json
+  - assets/js/orm.js
+
+# Configuración para GitHub Pages
 plugins:
   - jekyll-feed
-
-# Configuración personalizada
-repository: tu-usuario/tu-repositorio
-author:
-  name: amir
-  email: amir@email.com
-
-# ORM configuration
-data_sources:
-  projects: _data/projects.json
-  skills: _data/skills.json
-
-# Build settings
-markdown: kramdown
+  - jekyll-seo-tag
