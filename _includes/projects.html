@@ -12,17 +12,23 @@
 <script src="{{ '/assets/js/orm.js' | relative_url }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', async function() {
-  // Ruta relativa que funciona en local y GitHub Pages
-  const dataPath = window.location.host.includes('github.io')
-    ? `/${window.location.pathname.split('/')[1]}/_data/projects.json`
-    : '/_data/projects.json';
-  
-  const orm = new ORM(dataPath);
-  
+  const orm = new ORM('/_data/projects.json');
+  const container = document.getElementById('projects-container');
+  const testResults = document.querySelector('#test-results');
+
   try {
     const projects = await orm.getAll();
-    const container = document.getElementById('projects-container');
     
+    // Mostrar resultados de prueba
+    if (projects.length > 0 && projects[0].id === 0) {
+      testResults.innerHTML = '⚠️ ORM cargando datos locales (ver consola)';
+      testResults.style.color = 'orange';
+    } else {
+      testResults.innerHTML = '✅ ORM funcionando correctamente';
+      testResults.style.color = 'green';
+    }
+
+    // Renderizar proyectos
     projects.forEach(project => {
       const projectEl = document.createElement('div');
       projectEl.className = 'project';
@@ -33,14 +39,10 @@ document.addEventListener('DOMContentLoaded', async function() {
       `;
       container.appendChild(projectEl);
     });
-    
-    // Muestra éxito en pruebas
-    document.getElementById('test-results').innerHTML = 
-      '<div style="color:green;">✅ ORM funcionando correctamente</div>';
-    
+
   } catch (error) {
-    document.getElementById('test-results').innerHTML = 
-      `<div style="color:red;">❌ Error en ORM: ${error.message}</div>`;
+    testResults.innerHTML = `❌ Error en ORM: ${error.message}`;
+    testResults.style.color = 'red';
     console.error('Error:', error);
   }
 });
