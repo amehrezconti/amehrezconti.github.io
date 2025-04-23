@@ -1,16 +1,9 @@
 [
   {
     "id": 1,
-    "title": "Sitio Web Corporativo",
-    "description": "Un sitio web moderno para una empresa local.",
-    "url": "https://github.com/226218/",
-    "tags": ["web", "design"]
-  },
-  {
-    "id": 2,
-    "title": "Aplicación Móvil",
-    "description": "Aplicación iOS/Android para gestión de tareas.",
-    "url": "https://github.com/226218/",
-    "tags": ["mobile", "react-native"]
+    "title": "Mi Proyecto Real",
+    "description": "Descripción real del proyecto",
+    "url": "https://ejemplo.com",
+    "tags": ["web", "jekyll"]
   }
 ]
