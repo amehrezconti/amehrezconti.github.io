@@ -1,0 +1,21 @@
+title: Mi Portafolio
+description: Portafolio profesional con Jekyll, TDD y ORM
+baseurl: "" 
+url: "" 
+theme: minima
+plugins:
+  - jekyll-feed
+
+# Configuración personalizada
+repository: tu-usuario/tu-repositorio
+author:
+  name: amir
+  email: amir@email.com
+
+# ORM configuration
+data_sources:
+  projects: _data/projects.json
+  skills: _data/skills.json
+
+# Build settings
+markdown: kramdown

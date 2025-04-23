@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "JavaScript",
+    "level": "Avanzado",
+    "category": "Lenguajes"
+  },
+  {
+    "id": 2,
+    "name": "Ruby",
+    "level": "Intermedio",
+    "category": "Lenguajes"
+  },
+  {
+    "id": 3,
+    "name": "Jekyll",
+    "level": "Avanzado",
+    "category": "Herramientas"
+  }
+]
